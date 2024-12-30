@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Hero Manager</string>
+    <string name="heroes">Heroes</string>
+    <string name="heroTeams">Hero Teams</string>
+    <string name="missions">Missions</string>
+    <string name="settings">Settings</string>
+    <string name="loading">Loading...</string>
+    <string name="error">An error has occured.</string>
+</resources>
