@@ -1,6 +1,7 @@
 package com.geryes.heromanager.appui.hero
 
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -33,6 +34,7 @@ import com.geryes.heromanager.utilities.uiutils.StateScreen
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.ramcosta.composedestinations.generated.destinations.CreateHeroScreenDestination
+import com.ramcosta.composedestinations.generated.destinations.EditHeroScreenDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination<RootGraph>(start = true)
@@ -55,7 +57,7 @@ fun HeroesScreen(
                  onClick = {
                      navigator.navigate(CreateHeroScreenDestination)
                 },
-                 containerColor = MaterialTheme.colorScheme.secondary,
+                 containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f),
                  shape = RoundedCornerShape(23.dp),
              ) {
                  Icon(
@@ -122,7 +124,9 @@ fun HeroItem(
                     text = "${hero.power}",
                 )
             }
-        }
-
+        },
+        modifier = Modifier.clickable {
+            navigator.navigate(EditHeroScreenDestination(hero.id))
+        },
     )
 }

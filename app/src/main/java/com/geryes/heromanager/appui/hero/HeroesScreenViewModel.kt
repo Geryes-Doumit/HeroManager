@@ -34,8 +34,6 @@ class HeroesScreenViewModel @Inject constructor (
             initialValue = Result.Loading
         )
 
-
-
     sealed class UIEvent {
         data class OnDelete(val hero: Hero) : UIEvent()
     }
