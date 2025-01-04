@@ -1,4 +1,4 @@
-package com.geryes.heromanager.appui.hero
+package com.geryes.heromanager.appui.team
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,10 +9,12 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.geryes.heromanager.utilities.uiutils.DeleteButton
 import com.geryes.heromanager.utilities.uiutils.GoBackButton
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
 import com.ramcosta.composedestinations.annotation.Destination
@@ -21,17 +23,29 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination<RootGraph>
 @Composable
-fun CreateHeroScreen(
-    vm: HeroViewModel = hiltViewModel(),
-    navigator: DestinationsNavigator
+fun EditTeamScreen(
+    vm: TeamViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator,
+    teamId: Long,
 ) {
-    Scaffold(
+    LaunchedEffect(Unit) {
+        vm.setIdAndGetInfo(teamId)
+    }
+    Scaffold (
         topBar = {
             ScreenTopBar(
                 leftContent = {
                     GoBackButton(navigator)
                 },
-                title = "Add a Hero",
+                title = "Edit Team",
+                rightContent = {
+                    DeleteButton (
+                        delFunction = {
+                            vm.deleteTeam()
+                            navigator.popBackStack()
+                        }
+                    )
+                }
             )
         },
         bottomBar = {
@@ -39,22 +53,20 @@ fun CreateHeroScreen(
                 modifier = Modifier.fillMaxWidth().padding(10.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
 
-            ) {
+                ) {
                 Button(
                     onClick = {
-                        vm.createHero()
+                        vm.updateTeam()
                         navigator.popBackStack()
                     },
-                    enabled = !vm.heroNameError.collectAsState().value
-                            && !vm.realNameError.collectAsState().value
-                            && !vm.powerError.collectAsState().value,
+                    enabled = !vm.teamNameError.collectAsState().value,
                 ) {
-                    Text("Create Hero")
+                    Text("Update Team")
                 }
             }
         },
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
-        HeroInputFields(vm, navigator, innerPadding)
+        TeamInputFields(vm, navigator, innerPadding, teamId)
     }
 }

@@ -1,9 +1,9 @@
-package com.geryes.heromanager.appui.hero
+package com.geryes.heromanager.appui.team
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geryes.heromanager.model.Hero
-import com.geryes.heromanager.repository.HeroRepository
+import com.geryes.heromanager.model.Team
+import com.geryes.heromanager.repository.TeamRepository
 import com.geryes.heromanager.utilities.vmutils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,20 +12,18 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
-
 @HiltViewModel
-class HeroesScreenViewModel @Inject constructor (
-    repository: HeroRepository
+class TeamsScreenViewModel @Inject constructor(
+    repository: TeamRepository
 ) : ViewModel() {
+    private val _teams = repository.getAllTeams()
 
-    private val _heroes = repository.getAllHeroes()
-
-    data class UIState (
-        val heroes : List<Hero>
+    data class UIState(
+        val teams: List<Team>
     )
 
-    val uiState : StateFlow<Result<UIState>> = _heroes
-        .map { list : List<Hero> ->
+    val uiState: StateFlow<Result<UIState>> = _teams
+        .map { list ->
             Result.Success(UIState(list))
         }
         .stateIn(

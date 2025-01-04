@@ -17,6 +17,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.geryes.heromanager.R
@@ -26,13 +28,11 @@ import com.geryes.heromanager.utilities.uiutils.BottomBarDestination
 import com.geryes.heromanager.utilities.uiutils.IconPicture
 import com.geryes.heromanager.utilities.uiutils.IconRender
 import com.ramcosta.composedestinations.DestinationsNavHost
-import com.ramcosta.composedestinations.animations.NavHostAnimatedDestinationStyle
 import com.ramcosta.composedestinations.generated.NavGraphs
 import com.ramcosta.composedestinations.generated.destinations.HeroesScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.MissionsScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.SettingsScreenDestination
 import com.ramcosta.composedestinations.generated.destinations.TeamsScreenDestination
-import com.ramcosta.composedestinations.spec.DestinationStyle
 
 @Composable
 fun HeroManagerAppScreen() {
@@ -51,7 +51,7 @@ fun HeroManagerAppScreen() {
             AppBottomBar(
                 navController,
                 NavGraphs.root,
-                destinations,
+                getDestinationsList(),
             )
         }
     ) { innerPadding ->
@@ -64,53 +64,58 @@ fun HeroManagerAppScreen() {
     }
 }
 
-private val destinations = arrayOf<BottomBarDestination>(
-    BottomBarDestination(
-        direction = HeroesScreenDestination,
-        icon = IconRender(
-            focused = IconPicture(
-                vector = Icons.Filled.Person
+@Composable
+private fun getDestinationsList(): Array<BottomBarDestination> {
+    return arrayOf(
+        BottomBarDestination(
+            direction = HeroesScreenDestination,
+            icon = IconRender(
+                focused = IconPicture(
+                    vector = Icons.Filled.Person
+                    //ImageVector.vectorResource(R.drawable.superman_filled)
+                ),
+                unfocused = IconPicture(
+                    vector = Icons.Outlined.Person
+                    // ImageVector.vectorResource(R.drawable.superman_outlined)
+                ),
             ),
-            unfocused = IconPicture(
-                vector = Icons.Outlined.Person
-            ),
+            labelId = R.string.heroes,
         ),
-        labelId = R.string.heroes,
-    ),
-    BottomBarDestination(
-        direction = TeamsScreenDestination,
-        icon = IconRender(
-            focused = IconPicture(
-                vector = Icons.Filled.AccountBox
+        BottomBarDestination(
+            direction = TeamsScreenDestination,
+            icon = IconRender(
+                focused = IconPicture(
+                    vector = ImageVector.vectorResource(R.drawable.team_filled)
+                ),
+                unfocused = IconPicture(
+                    vector = ImageVector.vectorResource(R.drawable.team_outlined)
+                ),
             ),
-            unfocused = IconPicture(
-                vector = Icons.Outlined.AccountBox
-            ),
+            labelId = R.string.heroTeams,
         ),
-        labelId = R.string.heroTeams,
-    ),
-    BottomBarDestination(
-        direction = MissionsScreenDestination,
-        icon = IconRender(
-            focused = IconPicture(
-                vector = Icons.Filled.CheckCircle
+        BottomBarDestination(
+            direction = MissionsScreenDestination,
+            icon = IconRender(
+                focused = IconPicture(
+                    vector = ImageVector.vectorResource(R.drawable.mission_filled)
+                ),
+                unfocused = IconPicture(
+                    vector = ImageVector.vectorResource(R.drawable.mission_outlined)
+                ),
             ),
-            unfocused = IconPicture(
-                vector = Icons.Outlined.CheckCircle
-            ),
+            labelId = R.string.missions,
         ),
-        labelId = R.string.missions,
-    ),
-    BottomBarDestination(
-        direction = SettingsScreenDestination,
-        icon = IconRender(
-            focused = IconPicture(
-                vector = Icons.Filled.Settings
+        BottomBarDestination(
+            direction = SettingsScreenDestination,
+            icon = IconRender(
+                focused = IconPicture(
+                    vector = Icons.Filled.Settings
+                ),
+                unfocused = IconPicture(
+                    vector = Icons.Outlined.Settings
+                ),
             ),
-            unfocused = IconPicture(
-                vector = Icons.Outlined.Settings
-            ),
-        ),
-        labelId = R.string.settings,
+            labelId = R.string.settings,
+        )
     )
-)
+}

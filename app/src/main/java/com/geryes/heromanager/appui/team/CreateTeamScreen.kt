@@ -1,4 +1,4 @@
-package com.geryes.heromanager.appui.hero
+package com.geryes.heromanager.appui.team
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -21,8 +21,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Destination<RootGraph>
 @Composable
-fun CreateHeroScreen(
-    vm: HeroViewModel = hiltViewModel(),
+fun CreateTeamScreen(
+    vm: TeamViewModel = hiltViewModel(),
     navigator: DestinationsNavigator
 ) {
     Scaffold(
@@ -31,7 +31,7 @@ fun CreateHeroScreen(
                 leftContent = {
                     GoBackButton(navigator)
                 },
-                title = "Add a Hero",
+                title = "Add a Team",
             )
         },
         bottomBar = {
@@ -39,22 +39,20 @@ fun CreateHeroScreen(
                 modifier = Modifier.fillMaxWidth().padding(10.dp),
                 horizontalArrangement = Arrangement.SpaceAround,
 
-            ) {
+                ) {
                 Button(
                     onClick = {
-                        vm.createHero()
+                        vm.createTeam()
                         navigator.popBackStack()
                     },
-                    enabled = !vm.heroNameError.collectAsState().value
-                            && !vm.realNameError.collectAsState().value
-                            && !vm.powerError.collectAsState().value,
+                    enabled = !vm.teamNameError.collectAsState().value,
                 ) {
-                    Text("Create Hero")
+                    Text("Create Team")
                 }
             }
         },
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
-        HeroInputFields(vm, navigator, innerPadding)
+        TeamInputFields(vm, navigator, innerPadding)
     }
 }

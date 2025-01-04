@@ -5,12 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.geryes.heromanager.model.Hero
+import com.geryes.heromanager.model.Team
 
 
 @Database(
     entities = [
         Hero::class,
-        // Team::class,
+        Team::class,
         // Mission::class
     ],
     version = 1,
@@ -18,7 +19,7 @@ import com.geryes.heromanager.model.Hero
 )
 abstract class HeroManagerDB : RoomDatabase() {
     abstract fun heroDao() : HeroDao
-    // abstract fun teamDao() : TeamDao
+    abstract fun teamDao() : TeamDao
     // abstract fun missionDao() : MissionDao
 
     companion object {

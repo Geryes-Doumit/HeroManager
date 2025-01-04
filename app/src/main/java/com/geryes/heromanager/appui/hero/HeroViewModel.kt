@@ -2,8 +2,11 @@ package com.geryes.heromanager.appui.hero
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.geryes.heromanager.model.FullHero
 import com.geryes.heromanager.model.Hero
+import com.geryes.heromanager.model.Team
 import com.geryes.heromanager.repository.HeroRepository
+import com.geryes.heromanager.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HeroViewModel @Inject constructor(
     private val repository: HeroRepository,
-
+    private val teamRepository: TeamRepository // only to get the team info
 ) : ViewModel(){
     var heroName = MutableStateFlow("")
     var heroNameError = MutableStateFlow(true)
@@ -26,7 +29,9 @@ class HeroViewModel @Inject constructor(
     var power = MutableStateFlow("0")
     var powerError = MutableStateFlow(false)
 
-    private var initialHero = MutableStateFlow<Hero?>(null)
+    var team = MutableStateFlow<Team?>(null)
+
+    private var initialHero = MutableStateFlow<FullHero?>(null)
     var dataIsDifferent = MutableStateFlow(false)
 
     private val _id: MutableStateFlow<Long> = MutableStateFlow(-1)
@@ -34,14 +39,16 @@ class HeroViewModel @Inject constructor(
     fun setIdAndGetInfo(id: Long) = viewModelScope.launch {
         _id.value = id
         val heroFlow = repository.getHeroById(id)
-        heroFlow.flowOn(Dispatchers.IO).collect { hero ->
-            initialHero.update { hero }
-            heroName.update { hero?.heroName ?: "" }
+        heroFlow.flowOn(Dispatchers.IO).collect { fullHero ->
+            initialHero.update { fullHero }
+            heroName.update { fullHero?.hero?.heroName ?: "" }
             checkHeroNameError()
-            realName.update { hero?.realName ?: "" }
+            realName.update { fullHero?.hero?.realName ?: "" }
             checkRealNameError()
-            power.update { hero?.power.toString() }
+            power.update { fullHero?.hero?.power.toString() }
             checkPowerError()
+            team.update { fullHero?.team }
+            checkDataIsDifferent()
         }
     }
 
@@ -62,9 +69,10 @@ class HeroViewModel @Inject constructor(
 
     fun checkDataIsDifferent() {
         dataIsDifferent.value =
-                    (heroName.value != initialHero.value?.heroName) ||
-                    (realName.value != initialHero.value?.realName) ||
-                    (power.value != initialHero.value?.power.toString())
+            (heroName.value != initialHero.value?.hero?.heroName) ||
+                    (realName.value != initialHero.value?.hero?.realName) ||
+                    (power.value != initialHero.value?.hero?.power.toString()) ||
+                    ((team.value?.id) != initialHero.value?.hero?.teamId)
     }
 
     fun createHero() = viewModelScope.launch {
@@ -73,10 +81,12 @@ class HeroViewModel @Inject constructor(
             heroName = heroName.value,
             realName = realName.value,
             power = power.value.toInt(),
-            teamId = null
+            teamId = team.value?.id
         )
         val heroId = repository.createHero(hero)
         _id.value = heroId
+
+        updateTeams(null, team.value)
     }
 
     fun updateHero() = viewModelScope.launch {
@@ -85,9 +95,11 @@ class HeroViewModel @Inject constructor(
             heroName = heroName.value,
             realName = realName.value,
             power = power.value.toInt(),
-            teamId = null
+            teamId = team.value?.id
         )
         repository.updateHero(hero)
+
+        updateTeams(initialHero.value?.team, team.value)
     }
 
     fun deleteHero() = viewModelScope.launch {
@@ -96,8 +108,77 @@ class HeroViewModel @Inject constructor(
             heroName = heroName.value,
             realName = realName.value,
             power = power.value.toInt(),
-            teamId = null
+            teamId = team.value?.id
         )
         repository.deleteHero(hero)
+
+        updateTeams(initialHero.value?.team, null)
+    }
+
+    private fun updateTeams(oldTeam: Team?, newTeam: Team?) = viewModelScope.launch {
+        if (oldTeam == null && newTeam == null) {
+            return@launch
+        }
+
+        if (oldTeam == null) { // newTeam here is not null (added a team to the hero)
+            val heroesInTeam = repository.getHeroesByTeamId(newTeam!!.id)
+            val totalPower = heroesInTeam.sumOf { it.power }
+
+            teamRepository.updateTeam(
+                newTeam.copy(
+                    totalPower = totalPower
+                )
+            )
+
+            return@launch
+        }
+
+        if (newTeam == null) { // oldTeam here is not null (removed a team from the hero)
+            val heroesInTeam = repository.getHeroesByTeamId(oldTeam.id)
+            val totalPower = heroesInTeam.sumOf { it.power }
+            val newLeaderId = if (oldTeam.leaderId == _id.value) null else oldTeam.leaderId
+
+            teamRepository.updateTeam(
+                oldTeam.copy(
+                    totalPower = totalPower,
+                    leaderId = newLeaderId
+                )
+            )
+
+            return@launch
+        }
+
+        if (oldTeam.id == newTeam.id) { // in case we changed the power of the hero
+            val heroesInTeam = repository.getHeroesByTeamId(newTeam.id)
+            val totalPower = heroesInTeam.sumOf { it.power }
+
+            teamRepository.updateTeam(
+                newTeam.copy(
+                    totalPower = totalPower
+                )
+            )
+        }
+        else { // in case we changed the team of the hero
+            val heroesInNewTeam = repository.getHeroesByTeamId(newTeam.id)
+            val totalNewTeamPower = heroesInNewTeam.sumOf { it.power }
+            val heroesInOldTeam = repository.getHeroesByTeamId(oldTeam.id)
+            val totalOldTeamPower = heroesInOldTeam.sumOf { it.power }
+
+            // if the hero was the leader of the old team, we need to remove him from the leader position
+            val newLeaderId = if (oldTeam.leaderId == _id.value) null else oldTeam.leaderId
+
+            teamRepository.updateTeam(
+                newTeam.copy(
+                    totalPower = totalNewTeamPower
+                )
+            )
+
+            teamRepository.updateTeam(
+                oldTeam.copy(
+                    totalPower = totalOldTeamPower,
+                    leaderId = newLeaderId
+                )
+            )
+        }
     }
 }

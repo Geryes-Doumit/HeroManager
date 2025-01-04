@@ -19,10 +19,10 @@ class NavAppAnimations : NavHostAnimatedDestinationStyle() {
     override val enterTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition
         get() = {
             when (targetState.destination()) {
-                HeroesScreenDestination -> fadeIn()
-                TeamsScreenDestination -> fadeIn()
-                MissionsScreenDestination -> fadeIn()
-                SettingsScreenDestination -> fadeIn()
+                HeroesScreenDestination -> EnterTransition.None // fadeIn()
+                TeamsScreenDestination -> EnterTransition.None // fadeIn()
+                MissionsScreenDestination -> EnterTransition.None // fadeIn()
+                SettingsScreenDestination -> EnterTransition.None // fadeIn()
 
                 else -> slideInHorizontally() + fadeIn()
             }
@@ -31,10 +31,10 @@ class NavAppAnimations : NavHostAnimatedDestinationStyle() {
     override val exitTransition: AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition
         get() = {
             when (initialState.destination()) {
-                HeroesScreenDestination -> fadeOut()
-                TeamsScreenDestination -> fadeOut()
-                MissionsScreenDestination -> fadeOut()
-                SettingsScreenDestination -> fadeOut()
+                HeroesScreenDestination -> ExitTransition.None // fadeOut()
+                TeamsScreenDestination -> ExitTransition.None // fadeOut()
+                MissionsScreenDestination -> ExitTransition.None // fadeOut()
+                SettingsScreenDestination -> ExitTransition.None // fadeOut()
 
                 else -> slideOutHorizontally() + fadeOut()
             }

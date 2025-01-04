@@ -1,10 +1,14 @@
 package com.geryes.heromanager.utilities.uiutils
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -15,15 +19,35 @@ import com.geryes.heromanager.utilities.vmutils.Result
 fun LoadingScreen(
     text : String
 ) {
-    Text(text = text, modifier = Modifier.padding(vertical = 16.dp))
-    CircularProgressIndicator()
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(text = text, modifier = Modifier.padding(vertical = 16.dp))
+            // CircularProgressIndicator()
+        }
+    }
 }
 
 @Composable
 fun ErrorScreen(
     text : String
 ) {
-    Text(text = text, modifier = Modifier.padding(vertical = 16.dp), color = MaterialTheme.colorScheme.error)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier.padding(vertical = 16.dp),
+            color = MaterialTheme.colorScheme.error
+        )
+    }
 }
 
 @Composable
