@@ -73,14 +73,14 @@ class TeamViewModel @Inject constructor(
             totalPower = members.sumOf { it.power },
             state = initialTeam.value?.team?.state ?: TeamState.AVAILABLE
         )
-        val tid = repository.updateTeam(team)
-
         val removedMembers = initialTeam.value?.members?.filter { !members.contains(it) } ?: emptyList()
         heroRepository.removeHeroesFromTeam(removedMembers.map { it.id })
 
         heroRepository.updateHeroesInList(members.map {
-            hero -> hero.copy(teamId = tid)
+                hero -> hero.copy(teamId = team.id)
         })
+
+        repository.updateTeam(team)
     }
 
     fun deleteTeam() = viewModelScope.launch {
