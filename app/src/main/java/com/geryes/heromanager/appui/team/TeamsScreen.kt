@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geryes.heromanager.R
-import com.geryes.heromanager.model.Team
+import com.geryes.heromanager.model.TeamAndPower
 import com.geryes.heromanager.model.TeamState
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
 import com.geryes.heromanager.utilities.uiutils.StateScreen
@@ -86,9 +86,9 @@ fun SuccessTeamsScreen(
     LazyColumn {
         items(
             items = uiState.teams,
-            key = { team -> team.id }
-        ) { team ->
-            TeamItem(team = team, navigator = navigator)
+            key = { teamAndPower -> teamAndPower.id }
+        ) { teamAndPower ->
+            TeamItem(teamAndPower = teamAndPower, navigator = navigator)
             HorizontalDivider(
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
@@ -98,16 +98,16 @@ fun SuccessTeamsScreen(
 }
 
 @Composable
-fun TeamItem(team: Team, navigator: DestinationsNavigator) {
+fun TeamItem(teamAndPower: TeamAndPower, navigator: DestinationsNavigator) {
     ListItem(
         headlineContent = {
             Text(
-                text = team.name
+                text = teamAndPower.name
             )
         },
         supportingContent = {
             Text(
-                text = getTeamState(team.state)
+                text = getTeamState(teamAndPower.state)
             )
         },
         trailingContent = {
@@ -120,12 +120,12 @@ fun TeamItem(team: Team, navigator: DestinationsNavigator) {
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "${team.totalPower}",
+                    text = "${teamAndPower.totalPower}",
                 )
             }
         },
         modifier = Modifier.clickable {
-            navigator.navigate(EditTeamScreenDestination(team.id))
+            navigator.navigate(EditTeamScreenDestination(teamAndPower.id))
         }
     )
 }

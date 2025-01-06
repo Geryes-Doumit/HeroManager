@@ -4,6 +4,7 @@ import androidx.annotation.WorkerThread
 import com.geryes.heromanager.database.TeamDao
 import com.geryes.heromanager.model.FullTeam
 import com.geryes.heromanager.model.Team
+import com.geryes.heromanager.model.TeamAndPower
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -12,7 +13,7 @@ class TeamRepository(
     private val dispatcher : CoroutineDispatcher,
     private val teamDao : TeamDao
 ) {
-    fun getAllTeams() : Flow<List<Team>> {
+    fun getAllTeams() : Flow<List<TeamAndPower>> {
         return teamDao.getAllTeams()
     }
 

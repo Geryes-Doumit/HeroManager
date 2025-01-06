@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.geryes.heromanager.model.FullHero
 import com.geryes.heromanager.model.Hero
 import kotlinx.coroutines.flow.Flow
@@ -14,6 +15,7 @@ interface HeroDao {
     @Query("SELECT * from heroes")
     fun getAllHeroes() : Flow<List<Hero>>
 
+    @Transaction
     @Query("SELECT * from heroes WHERE id = :id")
     fun getHeroById(id : Long) : Flow<FullHero?>
 

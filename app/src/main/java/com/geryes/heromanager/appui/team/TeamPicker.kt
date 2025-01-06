@@ -28,17 +28,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geryes.heromanager.R
-import com.geryes.heromanager.database.TeamDao
 import com.geryes.heromanager.model.Team
+import com.geryes.heromanager.model.TeamAndPower
+import com.geryes.heromanager.repository.TeamRepository
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class TeamPickerViewModel @Inject constructor(
-    teamDao: TeamDao
+    teamRepo: TeamRepository
 ) : ViewModel() {
-    val teams = teamDao.getAllTeams()
+    val teams = teamRepo.getAllTeams()
 }
 
 // Used as a dialog in EditHeroScreen
@@ -86,11 +87,11 @@ fun TeamPicker(
             ) {
                 items(
                     items = teams.value,
-                    key = { team -> team.id }
+                    key = { teamAndPower -> teamAndPower.id }
                 ) {
                     item ->
                     TeamPickerItem(
-                        team = item,
+                        teamAndPower = item,
                         currentTeam = currentTeam,
                         onTeamSelected = onTeamSelected
                     )
@@ -103,23 +104,23 @@ fun TeamPicker(
 
 @Composable
 fun TeamPickerItem(
-    team: Team,
+    teamAndPower: TeamAndPower,
     currentTeam: Team? = null,
     onTeamSelected: (Team?) -> Unit
 ) {
     ListItem(
         headlineContent = {
             var current = ""
-            if (team.id == currentTeam?.id) {
+            if (teamAndPower.id == currentTeam?.id) {
                 current = " (current)"
             }
             Text(
-                text = team.name + current
+                text = teamAndPower.name + current
             )
         },
         supportingContent = {
             Text(
-                text = getTeamState(team.state)
+                text = getTeamState(teamAndPower.state)
             )
         },
         trailingContent = {
@@ -132,12 +133,12 @@ fun TeamPickerItem(
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "${team.totalPower}",
+                    text = "${teamAndPower.totalPower}",
                 )
             }
         },
         modifier = Modifier.clickable {
-            onTeamSelected(team)
+            onTeamSelected(teamAndPower.getTeam())
         }
     )
 }

@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HeroViewModel @Inject constructor(
     private val repository: HeroRepository,
-    private val teamRepository: TeamRepository // only to get the team info
+    private val teamRepository: TeamRepository // only to update team leaders
 ) : ViewModel(){
     var heroName = MutableStateFlow("")
     var heroNameError = MutableStateFlow(true)
@@ -86,7 +86,7 @@ class HeroViewModel @Inject constructor(
         val heroId = repository.createHero(hero)
         _id.value = heroId
 
-        updateTeams(null, team.value)
+        updateTeamLeaders(null, team.value)
     }
 
     fun updateHero() = viewModelScope.launch {
@@ -99,7 +99,7 @@ class HeroViewModel @Inject constructor(
         )
         repository.updateHero(hero)
 
-        updateTeams(initialHero.value?.team, team.value)
+        updateTeamLeaders(initialHero.value?.team, team.value)
     }
 
     fun deleteHero() = viewModelScope.launch {
@@ -112,71 +112,23 @@ class HeroViewModel @Inject constructor(
         )
         repository.deleteHero(hero)
 
-        updateTeams(initialHero.value?.team, null)
+        updateTeamLeaders(initialHero.value?.team, null)
     }
 
-    private fun updateTeams(oldTeam: Team?, newTeam: Team?) = viewModelScope.launch {
-        if (oldTeam == null && newTeam == null) {
+    private fun updateTeamLeaders(oldTeam: Team?, newTeam: Team?) = viewModelScope.launch {
+        // We can't update the leader of a team from that screen, so we don't need to do anything
+        // if the team is the same, or if he didn't have a team
+        if (oldTeam?.id == newTeam?.id || oldTeam == null)
             return@launch
-        }
 
-        if (oldTeam == null) { // newTeam here is not null (added a team to the hero)
-            val heroesInTeam = repository.getHeroesByTeamId(newTeam!!.id)
-            val totalPower = heroesInTeam.sumOf { it.power }
-
+        // If the team is different and the hero was the leader, we need to update the leader to null
+        if (oldTeam.leaderId == _id.value) { // oldTeam?.id != newTeam?.id is verified
             teamRepository.updateTeam(
-                newTeam.copy(
-                    totalPower = totalPower
-                )
-            )
-
-            return@launch
-        }
-
-        if (newTeam == null) { // oldTeam here is not null (removed a team from the hero)
-            val heroesInTeam = repository.getHeroesByTeamId(oldTeam.id)
-            val totalPower = heroesInTeam.sumOf { it.power }
-            val newLeaderId = if (oldTeam.leaderId == _id.value) null else oldTeam.leaderId
-
-            teamRepository.updateTeam(
-                oldTeam.copy(
-                    totalPower = totalPower,
-                    leaderId = newLeaderId
-                )
-            )
-
-            return@launch
-        }
-
-        if (oldTeam.id == newTeam.id) { // in case we changed the power of the hero
-            val heroesInTeam = repository.getHeroesByTeamId(newTeam.id)
-            val totalPower = heroesInTeam.sumOf { it.power }
-
-            teamRepository.updateTeam(
-                newTeam.copy(
-                    totalPower = totalPower
-                )
-            )
-        }
-        else { // in case we changed the team of the hero
-            val heroesInNewTeam = repository.getHeroesByTeamId(newTeam.id)
-            val totalNewTeamPower = heroesInNewTeam.sumOf { it.power }
-            val heroesInOldTeam = repository.getHeroesByTeamId(oldTeam.id)
-            val totalOldTeamPower = heroesInOldTeam.sumOf { it.power }
-
-            // if the hero was the leader of the old team, we need to remove him from the leader position
-            val newLeaderId = if (oldTeam.leaderId == _id.value) null else oldTeam.leaderId
-
-            teamRepository.updateTeam(
-                newTeam.copy(
-                    totalPower = totalNewTeamPower
-                )
-            )
-
-            teamRepository.updateTeam(
-                oldTeam.copy(
-                    totalPower = totalOldTeamPower,
-                    leaderId = newLeaderId
+                Team(
+                    id = oldTeam.id,
+                    name = oldTeam.name,
+                    leaderId = null,
+                    state = oldTeam.state
                 )
             )
         }

@@ -56,7 +56,6 @@ class TeamViewModel @Inject constructor(
             id = 0,
             name = teamName.value,
             leaderId = leader.value?.id,
-            totalPower = members.sumOf { it.power },
             state = TeamState.AVAILABLE
         )
         val newId = repository.createTeam(team)
@@ -70,7 +69,6 @@ class TeamViewModel @Inject constructor(
             id = _id.value,
             name = teamName.value,
             leaderId = leader.value?.id,
-            totalPower = members.sumOf { it.power },
             state = initialTeam.value?.team?.state ?: TeamState.AVAILABLE
         )
         val removedMembers = initialTeam.value?.members?.filter { !members.contains(it) } ?: emptyList()

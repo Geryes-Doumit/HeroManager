@@ -9,6 +9,6 @@ data class Team (
     val id : Long,
     val name : String,
     val leaderId : Long?,
-    val totalPower : Int,
+    // val totalPower : Int, // this will be calculated in the Dao
     val state : TeamState,
 )

@@ -2,7 +2,7 @@ package com.geryes.heromanager.appui.team
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geryes.heromanager.model.Team
+import com.geryes.heromanager.model.TeamAndPower
 import com.geryes.heromanager.repository.TeamRepository
 import com.geryes.heromanager.utilities.vmutils.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,7 @@ class TeamsScreenViewModel @Inject constructor(
     private val _teams = repository.getAllTeams()
 
     data class UIState(
-        val teams: List<Team>
+        val teams: List<TeamAndPower>
     )
 
     val uiState: StateFlow<Result<UIState>> = _teams
