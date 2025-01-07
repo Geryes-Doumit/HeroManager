@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.geryes.heromanager.R
 import com.geryes.heromanager.utilities.uiutils.DeleteButton
 import com.geryes.heromanager.utilities.uiutils.GoBackButton
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
@@ -37,7 +39,7 @@ fun EditTeamScreen(
                 leftContent = {
                     GoBackButton(navigator)
                 },
-                title = "Edit Team",
+                title = stringResource(R.string.edit_team_title),
                 rightContent = {
                     DeleteButton (
                         delFunction = {
@@ -61,7 +63,7 @@ fun EditTeamScreen(
                     },
                     enabled = !vm.teamNameError.collectAsState().value,
                 ) {
-                    Text("Update Team")
+                    Text(stringResource(R.string.edit_team_button))
                 }
             }
         },

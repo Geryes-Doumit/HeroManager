@@ -35,7 +35,7 @@ fun HeroManagerAppScreen() {
     val navController = rememberNavController()
 
     Scaffold(
-        topBar = {
+        topBar = { // just to color the status bar
             Text(
                 text = "",
                 modifier = Modifier.padding(0.dp)
@@ -68,11 +68,9 @@ private fun getDestinationsList(): Array<BottomBarDestination> {
             icon = IconRender(
                 focused = IconPicture(
                     vector = Icons.Filled.Person
-                    //ImageVector.vectorResource(R.drawable.superman_filled)
                 ),
                 unfocused = IconPicture(
                     vector = Icons.Outlined.Person
-                    // ImageVector.vectorResource(R.drawable.superman_outlined)
                 ),
             ),
             labelId = R.string.heroes,

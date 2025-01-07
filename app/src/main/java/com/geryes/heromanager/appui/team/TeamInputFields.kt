@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -54,8 +55,8 @@ fun TeamInputFields(
 
     if (showLeaderPicker.value) {
         HeroPicker(
-            dialogTitle = "Select Leader",
-            buttonTitle = "Remove leader",
+            dialogTitle = stringResource(R.string.select_leader),
+            buttonTitle = stringResource(R.string.remove_leader),
             currentHeroes = listOf(vm.leader.collectAsState().value),
             memberList = vm.members,
             onHeroSelected = {
@@ -68,7 +69,7 @@ fun TeamInputFields(
 
     if (showMemberPicker.value) {
         HeroPicker(
-            dialogTitle = "Select Member",
+            dialogTitle = stringResource(R.string.select_member),
             currentHeroes = vm.members,
             onHeroSelected = {
                 showMemberPicker.value = false
@@ -92,7 +93,7 @@ fun TeamInputFields(
             //TODO: Implement image selection
         }
         Text(
-            text = "Name",
+            text = stringResource(R.string.team_input_title_name),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 10.dp, start = 10.dp),
@@ -103,14 +104,14 @@ fun TeamInputFields(
                 vm.teamName.value = it
                 vm.checkTeamNameError()
             },
-            label = { Text("Team Name") },
+            label = { Text(stringResource(R.string.team_input_name)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
             isError = vm.teamNameError.collectAsState().value,
         )
         Text(
-            text = "Leader",
+            text = stringResource(R.string.team_input_leader),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 10.dp, start = 10.dp),
@@ -118,7 +119,7 @@ fun TeamInputFields(
         OutlinedTextField(
             value = vm.leader.collectAsState().value?.heroName ?: "",
             onValueChange = { },
-            label = { Text("Leader") },
+            label = { Text(stringResource(R.string.team_input_leader)) },
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
             enabled = false,
@@ -133,7 +134,7 @@ fun TeamInputFields(
                 ),
         )
         Text(
-            text = "Members",
+            text = stringResource(R.string.team_input_members),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(
@@ -148,7 +149,8 @@ fun TeamInputFields(
                     topMultiplier = 1.1f,
                     leftContent = {
                         Text(
-                            text = "Total Power: ${vm.members.sumOf { it.power }}",
+                            text = stringResource(R.string.team_total_power)
+                                    +" ${vm.members.sumOf { it.power }}",
                         )
                     },
                     title = "",
@@ -219,7 +221,7 @@ fun TeamMemberItem(hero: Hero, onRemove: () -> Unit) {
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(R.drawable.bicep_black),
-                        contentDescription = "power",
+                        contentDescription = stringResource(R.string.power_icon_content_description),
                         modifier = Modifier.size(20.dp)
                     )
                     Text(

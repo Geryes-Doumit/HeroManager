@@ -20,11 +20,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.geryes.heromanager.R
 import com.geryes.heromanager.appui.team.TeamPicker
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -59,7 +61,7 @@ fun HeroInputFields(
             //TODO: Implement image selection
         }
         Text(
-            text = "Personal Information",
+            text = stringResource(R.string.hero_input_personal_info),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 10.dp, start = 10.dp),
@@ -71,7 +73,7 @@ fun HeroInputFields(
                 vm.checkHeroNameError()
                 vm.checkDataIsDifferent()
             },
-            label = { Text("Hero Name") },
+            label = { Text(stringResource(R.string.hero_name_input)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
@@ -84,7 +86,7 @@ fun HeroInputFields(
                 vm.checkRealNameError()
                 vm.checkDataIsDifferent()
             },
-            label = { Text("Real Name") },
+            label = { Text(stringResource(R.string.real_name_input)) },
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
@@ -103,7 +105,7 @@ fun HeroInputFields(
                 vm.checkPowerError()
                 vm.checkDataIsDifferent()
             },
-            label = { Text("Power") },
+            label = { Text(stringResource(R.string.power_input)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(23.dp),
@@ -111,7 +113,7 @@ fun HeroInputFields(
             isError = vm.powerError.collectAsState().value,
         )
         Text(
-            text = "Team",
+            text = stringResource(R.string.hero_input_title_team),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 10.dp, start = 10.dp),
@@ -119,7 +121,7 @@ fun HeroInputFields(
         OutlinedTextField(
             value = vm.team.value?.name ?: "",
             onValueChange = {},
-            label = { Text("Team") },
+            label = { Text(stringResource(R.string.hero_team_input)) },
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
             readOnly = true,

@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,7 +50,7 @@ fun TeamsScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             ScreenTopBar(
-                title = "Team Manager"
+                title = stringResource(R.string.teams_screen_title),
             )
         },
         floatingActionButton = {
@@ -61,7 +62,7 @@ fun TeamsScreen(
                 shape = RoundedCornerShape(23.dp),
             ) {
                 Icon(
-                    Icons.Filled.Add, contentDescription = "add"
+                    Icons.Filled.Add, contentDescription = stringResource(R.string.add_button_content_description),
                 )
             }
         },
@@ -116,7 +117,7 @@ fun TeamItem(teamAndPower: TeamAndPower, navigator: DestinationsNavigator) {
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.bicep_black),
-                    contentDescription = "power",
+                    contentDescription = stringResource(R.string.power_icon_content_description),
                     modifier = Modifier.size(20.dp)
                 )
                 Text(

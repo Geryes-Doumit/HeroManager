@@ -1,6 +1,5 @@
 package com.geryes.heromanager.appui.hero
 
-import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -48,7 +48,7 @@ fun HeroesScreen(
     Scaffold(
         topBar = {
             ScreenTopBar(
-                title = "Hero Manager",
+                title = stringResource(R.string.heroes_screen_title),
             )
         },
         modifier = Modifier.fillMaxSize(),
@@ -61,7 +61,7 @@ fun HeroesScreen(
                  shape = RoundedCornerShape(23.dp),
              ) {
                  Icon(
-                     Icons.Filled.Add, contentDescription = "add"
+                     Icons.Filled.Add, contentDescription = stringResource(R.string.add_button_content_description),
                  )
              }
         }
@@ -117,7 +117,7 @@ fun HeroItem(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.bicep_black),
-                    contentDescription = "power",
+                    contentDescription = stringResource(R.string.power_icon_content_description),
                     modifier = Modifier.size(20.dp)
                 )
                 Text(

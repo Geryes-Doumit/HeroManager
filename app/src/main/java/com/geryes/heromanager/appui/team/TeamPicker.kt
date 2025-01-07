@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -60,7 +61,7 @@ fun TeamPicker(
             topBar = {
                 ScreenTopBar(
                     topMultiplier = 1.2f,
-                    title = "Select a team",
+                    title = stringResource(R.string.select_team),
                 )
             },
             modifier = Modifier.size(400.dp, 500.dp)
@@ -76,7 +77,7 @@ fun TeamPicker(
                             onTeamSelected(null)
                         },
                     ) {
-                        Text("Remove Team")
+                        Text(stringResource(R.string.remove_team))
                     }
                 }
             }
@@ -112,7 +113,7 @@ fun TeamPickerItem(
         headlineContent = {
             var current = ""
             if (teamAndPower.id == currentTeam?.id) {
-                current = " (current)"
+                current = " " + stringResource(R.string.current)
             }
             Text(
                 text = teamAndPower.name + current
@@ -129,7 +130,7 @@ fun TeamPickerItem(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.bicep_black),
-                    contentDescription = "power",
+                    contentDescription = stringResource(R.string.power_icon_content_description),
                     modifier = Modifier.size(20.dp)
                 )
                 Text(

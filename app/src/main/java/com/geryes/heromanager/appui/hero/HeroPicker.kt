@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
@@ -85,8 +86,8 @@ class HeroPickerViewModel @Inject constructor(
 @Composable
 fun HeroPicker(
     heroPickerVM : HeroPickerViewModel = hiltViewModel(),
-    dialogTitle: String = "Select a Hero",
-    buttonTitle: String = "Cancel",
+    dialogTitle: String = stringResource(R.string.hero_picker_title),
+    buttonTitle: String = stringResource(R.string.hero_picker_button_cancel),
     currentHeroes: List<Hero?> = emptyList(),
     memberList: List<Hero>? = null,
     onHeroSelected: (Hero?) -> Unit,
@@ -141,8 +142,8 @@ fun HeroPicker(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        val text: String = if (memberList != null) "Only showing team members."
-                                      else "Only showing heroes that aren't already in a team."
+                        val text: String = if (memberList != null) stringResource(R.string.hero_picker_only_members)
+                                      else stringResource(R.string.hero_picker_heroes_not_in_team)
                         Text(
                             text = text,
                             style = TextStyle(
@@ -180,7 +181,8 @@ fun HeroPickerItem(
 ) {
     ListItem(
         headlineContent = {
-            val currentLeader = if (hero.id == leaderId) " (Current leader)" else ""
+            val currentLeader = if (hero.id == leaderId) " " + stringResource(R.string.current_leader)
+                                else ""
             Text(
                 text = hero.heroName + currentLeader
             )
@@ -196,7 +198,7 @@ fun HeroPickerItem(
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.bicep_black),
-                    contentDescription = "power",
+                    contentDescription = stringResource(R.string.power_icon_content_description),
                     modifier = Modifier.size(20.dp)
                 )
                 Text(

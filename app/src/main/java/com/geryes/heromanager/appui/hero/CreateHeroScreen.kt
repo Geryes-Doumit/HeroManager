@@ -11,8 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.geryes.heromanager.R
 import com.geryes.heromanager.utilities.uiutils.GoBackButton
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
 import com.ramcosta.composedestinations.annotation.Destination
@@ -31,7 +33,7 @@ fun CreateHeroScreen(
                 leftContent = {
                     GoBackButton(navigator)
                 },
-                title = "Add a Hero",
+                title = stringResource(R.string.create_hero_title),
             )
         },
         bottomBar = {
@@ -49,7 +51,7 @@ fun CreateHeroScreen(
                             && !vm.realNameError.collectAsState().value
                             && !vm.powerError.collectAsState().value,
                 ) {
-                    Text("Create Hero")
+                    Text(stringResource(R.string.create_hero_button))
                 }
             }
         },
