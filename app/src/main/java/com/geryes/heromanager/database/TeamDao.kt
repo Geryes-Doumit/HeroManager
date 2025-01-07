@@ -14,7 +14,9 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface TeamDao {
     @Query("SELECT teams.id, name, leaderId, state, sum(power) as 'totalPower'" +
-            "from teams join heroes on teams.id = heroes.teamId") // sum() already groups by teamId
+            "from teams join heroes on teams.id = heroes.teamId group by teams.id")
+    // Without the 'group by' at the end, the query returns null when there are no heroes in the team
+    // here, it returns an empty list
     fun getAllTeams() : Flow<List<TeamAndPower>>
 
     @Transaction

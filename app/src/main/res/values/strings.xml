@@ -42,4 +42,8 @@
     <string name="remove_team">Remove Team</string>
     <string name="current">(current)</string>
     <string name="teams_screen_title">Team Manager</string>
+    <string name="clear_button">Clear database</string>
+    <string name="busy">Busy</string>
+    <string name="available">Available</string>
+    <string name="fill_button">Fill database</string>
 </resources>

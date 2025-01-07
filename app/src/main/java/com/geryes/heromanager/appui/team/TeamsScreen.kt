@@ -131,9 +131,10 @@ fun TeamItem(teamAndPower: TeamAndPower, navigator: DestinationsNavigator) {
     )
 }
 
+@Composable
 fun getTeamState(enum : TeamState) : String {
     return when (enum) {
-        TeamState.BUSY -> "Busy"
-        TeamState.AVAILABLE -> "Available"
+        TeamState.BUSY -> stringResource(R.string.busy)
+        TeamState.AVAILABLE -> stringResource(R.string.available)
     }
 }
