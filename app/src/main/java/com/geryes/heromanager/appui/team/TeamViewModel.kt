@@ -52,38 +52,35 @@ class TeamViewModel @Inject constructor(
     }
 
     fun createTeam() = viewModelScope.launch {
-        val team = Team(
-            id = 0,
-            name = teamName.value,
-            leaderId = leader.value?.id,
-            state = TeamState.AVAILABLE
+        val fullTeam = FullTeam(
+            team = Team(
+                id = 0,
+                name = teamName.value,
+                leaderId = leader.value?.id,
+                state = TeamState.AVAILABLE
+            ),
+            leader = leader.value,
+            members = members
         )
-        val newId = repository.createTeam(team)
-        heroRepository.updateHeroesInList(members.map {
-            hero -> hero.copy(teamId = newId)
-        })
+        repository.createTeam(fullTeam)
     }
 
     fun updateTeam() = viewModelScope.launch {
-        val team = Team(
-            id = _id.value,
-            name = teamName.value,
-            leaderId = leader.value?.id,
-            state = initialTeam.value?.team?.state ?: TeamState.AVAILABLE
+        val newTeam = FullTeam(
+            team = Team(
+                id = _id.value,
+                name = teamName.value,
+                leaderId = leader.value?.id,
+                state = initialTeam.value?.team?.state ?: TeamState.AVAILABLE
+            ),
+            leader = leader.value,
+            members = members
         )
-        val removedMembers = initialTeam.value?.members?.filter { !members.contains(it) } ?: emptyList()
-        heroRepository.removeHeroesFromTeam(removedMembers.map { it.id })
-
-        heroRepository.updateHeroesInList(members.map {
-                hero -> hero.copy(teamId = team.id)
-        })
-
-        repository.updateTeam(team)
+        repository.updateTeam(initialTeam.value, newTeam)
     }
 
     fun deleteTeam() = viewModelScope.launch {
         if (initialTeam.value == null) return@launch
-        repository.deleteTeam(initialTeam.value!!.team)
-        heroRepository.removeHeroesFromTeam(initialTeam.value!!.members.map { it.id })
+        repository.deleteTeam(initialTeam.value!!)
     }
 }

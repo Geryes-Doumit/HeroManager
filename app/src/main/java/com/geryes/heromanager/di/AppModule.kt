@@ -54,7 +54,8 @@ object AppModule {
     @Provides
     fun provideTeamRepository(
         ioDispatcher: CoroutineDispatcher,
-        teamDao: TeamDao
-    ) = TeamRepository(ioDispatcher, teamDao)
+        teamDao: TeamDao,
+        heroDao: HeroDao
+    ) = TeamRepository(ioDispatcher, teamDao, heroDao)
 
 }

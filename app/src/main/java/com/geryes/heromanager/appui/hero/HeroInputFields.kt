@@ -93,7 +93,7 @@ fun HeroInputFields(
             isError = vm.realNameError.collectAsState().value,
         )
         Text(
-            text = "Stats",
+            text = stringResource(R.string.hero_input_title_stats),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 10.dp, start = 10.dp),

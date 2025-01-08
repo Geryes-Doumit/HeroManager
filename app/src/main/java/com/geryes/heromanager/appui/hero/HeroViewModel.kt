@@ -53,11 +53,13 @@ class HeroViewModel @Inject constructor(
     }
 
     fun checkHeroNameError() {
-        heroNameError.value = heroName.value.isEmpty() || heroName.value.length < 2 || heroName.value.length > 50
+        heroNameError.value = heroName.value.isEmpty()
+                || heroName.value.length < 2 || heroName.value.length > 50
     }
 
     fun checkRealNameError() {
-        realNameError.value = realName.value.isEmpty() || realName.value.length < 2 || realName.value.length > 50
+        realNameError.value = realName.value.isEmpty()
+                || realName.value.length < 2 || realName.value.length > 50
     }
 
     fun checkPowerError() {
@@ -121,9 +123,9 @@ class HeroViewModel @Inject constructor(
         if (oldTeam?.id == newTeam?.id || oldTeam == null)
             return@launch
 
-        // If the team is different and the hero was the leader, we need to update the leader to null
+        // If the team is different and the hero was the leader, update the team leader to null
         if (oldTeam.leaderId == _id.value) { // oldTeam?.id != newTeam?.id is verified
-            teamRepository.updateTeam(
+            teamRepository.updateCoreTeam(
                 Team(
                     id = oldTeam.id,
                     name = oldTeam.name,

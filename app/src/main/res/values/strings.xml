@@ -46,4 +46,5 @@
     <string name="busy">Busy</string>
     <string name="available">Available</string>
     <string name="fill_button">Fill database</string>
+    <string name="hero_input_title_stats">Stats</string>
 </resources>
