@@ -39,7 +39,9 @@ fun EditTeamScreen(
                 leftContent = {
                     GoBackButton(navigator)
                 },
-                title = stringResource(R.string.edit_team_title),
+                title = vm.teamName.collectAsState(
+                    initial = stringResource(R.string.edit_team_title)
+                ).value,
                 rightContent = {
                     DeleteButton (
                         delFunction = {
@@ -61,7 +63,8 @@ fun EditTeamScreen(
                         vm.updateTeam()
                         navigator.popBackStack()
                     },
-                    enabled = !vm.teamNameError.collectAsState().value,
+                    enabled = !vm.teamNameError.collectAsState().value
+                            && vm.dataIsDiffrent.collectAsState().value,
                 ) {
                     Text(stringResource(R.string.edit_team_button))
                 }

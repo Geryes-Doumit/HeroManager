@@ -7,7 +7,6 @@ import com.geryes.heromanager.model.FullTeam
 import com.geryes.heromanager.model.Hero
 import com.geryes.heromanager.model.Team
 import com.geryes.heromanager.model.TeamState
-import com.geryes.heromanager.repository.HeroRepository
 import com.geryes.heromanager.repository.TeamRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,8 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeamViewModel @Inject constructor(
-    private val repository: TeamRepository,
-    private val heroRepository: HeroRepository
+    private val repository: TeamRepository
 ) : ViewModel() {
     var teamName = MutableStateFlow("")
     var teamNameError = MutableStateFlow(true)
@@ -30,6 +28,8 @@ class TeamViewModel @Inject constructor(
     var members = SnapshotStateList<Hero>()
 
     private var initialTeam = MutableStateFlow<FullTeam?>(null)
+
+    var dataIsDiffrent = MutableStateFlow(false)
 
     private val _id: MutableStateFlow<Long> = MutableStateFlow(-1)
 
@@ -49,6 +49,18 @@ class TeamViewModel @Inject constructor(
     fun checkTeamNameError() {
         teamNameError.value = teamName.value.isEmpty()
                 || teamName.value.length < 2 || teamName.value.length > 50
+    }
+
+    fun checkDataIsDifferent() {
+        val teamNameIsDifferent = teamName.value != initialTeam.value?.team?.name
+        val leaderIsDifferent = leader.value?.id != initialTeam.value?.leader?.id
+        val membersAreDifferent = checkMembersAreDifferent()
+        dataIsDiffrent.value = teamNameIsDifferent || leaderIsDifferent || membersAreDifferent
+    }
+
+    private fun checkMembersAreDifferent(): Boolean {
+        if (members.size != initialTeam.value?.members?.size) return true
+        return members.any { !initialTeam.value?.members?.contains(it)!! }
     }
 
     fun createTeam() = viewModelScope.launch {

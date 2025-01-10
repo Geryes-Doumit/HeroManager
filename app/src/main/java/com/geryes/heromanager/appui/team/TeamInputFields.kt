@@ -62,6 +62,7 @@ fun TeamInputFields(
             onHeroSelected = {
                 showLeaderPicker.value = false
                 vm.leader.value = it
+                vm.checkDataIsDifferent()
             },
             teamId = teamId
         )
@@ -76,6 +77,7 @@ fun TeamInputFields(
                 if (it != null && !vm.members.contains(it)) {
                     vm.members.add(it)
                 }
+                vm.checkDataIsDifferent()
             },
             teamId = teamId
         )
@@ -103,6 +105,7 @@ fun TeamInputFields(
             onValueChange = {
                 vm.teamName.value = it
                 vm.checkTeamNameError()
+                vm.checkDataIsDifferent()
             },
             label = { Text(stringResource(R.string.team_input_name)) },
             modifier = Modifier.fillMaxWidth(),
@@ -191,6 +194,7 @@ fun TeamInputFields(
                             if (vm.leader.value == it) {
                                 vm.leader.value = null
                             }
+                            vm.checkDataIsDifferent()
                         }
                     )
                 }

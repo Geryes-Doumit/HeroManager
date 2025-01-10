@@ -7,10 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -30,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geryes.heromanager.R
 import com.geryes.heromanager.model.TeamAndPower
 import com.geryes.heromanager.model.TeamState
+import com.geryes.heromanager.utilities.uiutils.CustomFloatingButton
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
 import com.geryes.heromanager.utilities.uiutils.StateScreen
 import com.ramcosta.composedestinations.annotation.Destination
@@ -54,16 +51,8 @@ fun TeamsScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    navigator.navigate(CreateTeamScreenDestination)
-                },
-                containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f),
-                shape = RoundedCornerShape(23.dp),
-            ) {
-                Icon(
-                    Icons.Filled.Add, contentDescription = stringResource(R.string.add_button_content_description),
-                )
+            CustomFloatingButton {
+                navigator.navigate(CreateTeamScreenDestination)
             }
         },
     ) { innerPadding ->
