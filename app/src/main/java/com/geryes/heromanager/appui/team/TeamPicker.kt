@@ -29,7 +29,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geryes.heromanager.R
-import com.geryes.heromanager.model.Team
 import com.geryes.heromanager.model.TeamAndPower
 import com.geryes.heromanager.repository.TeamRepository
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
