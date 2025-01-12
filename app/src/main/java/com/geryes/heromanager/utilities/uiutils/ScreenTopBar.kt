@@ -1,9 +1,11 @@
 package com.geryes.heromanager.utilities.uiutils
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,8 +40,14 @@ fun ScreenTopBar(
             text = title,
             fontSize = 23.sp,
             fontWeight = FontWeight.Bold,
+            modifier = Modifier.requiredWidthIn(max = 280.dp)
         )
-        rightContent()
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            rightContent()
+        }
     }
 
 }

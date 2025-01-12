@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
@@ -40,7 +41,9 @@ import androidx.compose.ui.unit.sp
 import com.geryes.heromanager.R
 import com.geryes.heromanager.appui.hero.HeroPicker
 import com.geryes.heromanager.model.Hero
+import com.geryes.heromanager.model.TeamState
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
+import com.geryes.heromanager.utilities.uiutils.showToast
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
@@ -50,6 +53,7 @@ fun TeamInputFields(
     innerPadding: PaddingValues,
     teamId: Long? = null,
 ) {
+    val teamState = vm.initialTeam.collectAsState().value?.team?.state
     val showLeaderPicker: MutableState<Boolean> = remember { mutableStateOf(false) }
     val showMemberPicker: MutableState<Boolean> = remember { mutableStateOf(false) }
 
@@ -83,6 +87,10 @@ fun TeamInputFields(
         )
     }
 
+    // for the toast
+    val context = LocalContext.current
+    val cannotDeleteTeamToastMsg = stringResource(R.string.cannot_delete_or_edit_team)
+
     Column(
         modifier = Modifier.padding(innerPadding)
             .fillMaxSize(),
@@ -112,6 +120,7 @@ fun TeamInputFields(
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
             isError = vm.teamNameError.collectAsState().value,
+            readOnly = teamState == TeamState.BUSY,
         )
         Text(
             text = stringResource(R.string.team_input_leader),
@@ -132,7 +141,13 @@ fun TeamInputFields(
             modifier = Modifier.fillMaxWidth()
                 .clickable (
                     onClick = {
-                        showLeaderPicker.value = true
+                        if (teamState != TeamState.BUSY)
+                            showLeaderPicker.value = true
+                        else
+                            showToast(
+                                context,
+                                cannotDeleteTeamToastMsg
+                            )
                     }
                 ),
         )
@@ -166,7 +181,13 @@ fun TeamInputFields(
                                 imageVector = Icons.Filled.Add,
                                 contentDescription = "add member",
                                 modifier = Modifier.clickable {
-                                    showMemberPicker.value = true
+                                    if (teamState != TeamState.BUSY)
+                                        showMemberPicker.value = true
+                                    else
+                                        showToast(
+                                            context,
+                                            cannotDeleteTeamToastMsg
+                                        )
                                 }
                             )
                         }
@@ -190,11 +211,18 @@ fun TeamInputFields(
                     TeamMemberItem(
                         hero = it,
                         onRemove = {
-                            vm.members.remove(it)
-                            if (vm.leader.value == it) {
-                                vm.leader.value = null
+                            if (teamState == TeamState.BUSY)
+                                showToast(
+                                    context,
+                                    cannotDeleteTeamToastMsg
+                                )
+                            else {
+                                vm.members.remove(it)
+                                if (vm.leader.value == it) {
+                                    vm.leader.value = null
+                                }
+                                vm.checkDataIsDifferent()
                             }
-                            vm.checkDataIsDifferent()
                         }
                     )
                 }

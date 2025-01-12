@@ -20,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -28,6 +29,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.geryes.heromanager.R
 import com.geryes.heromanager.appui.team.TeamPicker
+import com.geryes.heromanager.model.TeamAndPower
+import com.geryes.heromanager.model.TeamState
+import com.geryes.heromanager.utilities.uiutils.showToast
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
@@ -40,14 +44,18 @@ fun HeroInputFields(
 
     if (showTeamPicker.value) {
         TeamPicker(
-            currentTeam = vm.team.collectAsState().value,
+            currentTeam = TeamAndPower.fromTeam(vm.team.collectAsState().value),
             onTeamSelected = {
                 showTeamPicker.value = false
-                vm.team.value = it
+                vm.team.value = it?.getTeam()
                 vm.checkDataIsDifferent()
             }
         )
     }
+
+    // for the toast
+    val context = LocalContext.current
+    val toastMessage = stringResource(R.string.cannot_delete_or_edit_hero)
 
     Column(
         modifier = Modifier.padding(innerPadding)
@@ -78,6 +86,7 @@ fun HeroInputFields(
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
             isError = vm.heroNameError.collectAsState().value,
+            readOnly = vm.team.collectAsState().value?.state == TeamState.BUSY,
         )
         OutlinedTextField(
             value = vm.realName.collectAsState().value,
@@ -91,6 +100,7 @@ fun HeroInputFields(
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
             isError = vm.realNameError.collectAsState().value,
+            readOnly = vm.team.collectAsState().value?.state == TeamState.BUSY,
         )
         Text(
             text = stringResource(R.string.hero_input_title_stats),
@@ -111,6 +121,7 @@ fun HeroInputFields(
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
             isError = vm.powerError.collectAsState().value,
+            readOnly = vm.team.collectAsState().value?.state == TeamState.BUSY,
         )
         Text(
             text = stringResource(R.string.hero_input_title_team),
@@ -132,7 +143,10 @@ fun HeroInputFields(
             modifier = Modifier.fillMaxWidth()
                 .clickable (
                     onClick = {
-                        showTeamPicker.value = true
+                        if (vm.team.value?.state == TeamState.BUSY)
+                            showToast(context, toastMessage)
+                        else
+                            showTeamPicker.value = true
                     }
                 ),
         )

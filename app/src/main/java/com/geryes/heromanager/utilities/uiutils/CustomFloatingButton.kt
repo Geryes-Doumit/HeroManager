@@ -16,11 +16,11 @@ fun CustomFloatingButton(onClick: () -> Unit) {
     val contentColor = if (isSystemInDarkTheme()) {
         MaterialTheme.colorScheme.onBackground
     } else {
-        MaterialTheme.colorScheme.onSecondary
+        MaterialTheme.colorScheme.onSecondaryContainer
     }
 
     val containerColor = if (isSystemInDarkTheme()) {
-        MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
+        MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f)
     } else {
         MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f)
     }

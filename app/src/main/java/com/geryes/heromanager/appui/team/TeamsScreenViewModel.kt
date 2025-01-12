@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeamsScreenViewModel @Inject constructor(
-    repository: TeamRepository
+    private val repository: TeamRepository
 ) : ViewModel() {
     private val _teams = repository.getAllTeams()
 

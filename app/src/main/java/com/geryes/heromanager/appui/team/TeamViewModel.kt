@@ -27,9 +27,9 @@ class TeamViewModel @Inject constructor(
 
     var members = SnapshotStateList<Hero>()
 
-    private var initialTeam = MutableStateFlow<FullTeam?>(null)
+    var initialTeam = MutableStateFlow<FullTeam?>(null)
 
-    var dataIsDiffrent = MutableStateFlow(false)
+    var dataIsDifferent = MutableStateFlow(false)
 
     private val _id: MutableStateFlow<Long> = MutableStateFlow(-1)
 
@@ -55,7 +55,7 @@ class TeamViewModel @Inject constructor(
         val teamNameIsDifferent = teamName.value != initialTeam.value?.team?.name
         val leaderIsDifferent = leader.value?.id != initialTeam.value?.leader?.id
         val membersAreDifferent = checkMembersAreDifferent()
-        dataIsDiffrent.value = teamNameIsDifferent || leaderIsDifferent || membersAreDifferent
+        dataIsDifferent.value = teamNameIsDifferent || leaderIsDifferent || membersAreDifferent
     }
 
     private fun checkMembersAreDifferent(): Boolean {

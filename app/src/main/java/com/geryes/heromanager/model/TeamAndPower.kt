@@ -10,4 +10,14 @@ data class TeamAndPower (
     fun getTeam(): Team {
         return Team(id, name, leaderId, state)
     }
+
+    companion object {
+        // When we don't need the power but need to pass a TeamAndPower object
+        fun fromTeam(team: Team?): TeamAndPower? {
+            if (team == null) return null
+
+            return TeamAndPower(team.id, team.name, team.leaderId, team.state, 0)
+        }
+    }
+
 }

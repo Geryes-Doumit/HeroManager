@@ -48,8 +48,8 @@ class TeamPickerViewModel @Inject constructor(
 @Composable
 fun TeamPicker(
     teamPickerVM : TeamPickerViewModel = hiltViewModel(),
-    currentTeam: Team? = null,
-    onTeamSelected: (Team?) -> Unit
+    currentTeam: TeamAndPower? = null,
+    onTeamSelected: (TeamAndPower?) -> Unit
 ) {
     val teams = teamPickerVM.teams.collectAsStateWithLifecycle(initialValue = emptyList())
     Dialog(
@@ -106,8 +106,8 @@ fun TeamPicker(
 @Composable
 fun TeamPickerItem(
     teamAndPower: TeamAndPower,
-    currentTeam: Team? = null,
-    onTeamSelected: (Team?) -> Unit
+    currentTeam: TeamAndPower? = null,
+    onTeamSelected: (TeamAndPower?) -> Unit
 ) {
     ListItem(
         headlineContent = {
@@ -139,7 +139,7 @@ fun TeamPickerItem(
             }
         },
         modifier = Modifier.clickable {
-            onTeamSelected(teamAndPower.getTeam())
+            onTeamSelected(teamAndPower)
         }
     )
 }

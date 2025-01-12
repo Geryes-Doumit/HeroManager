@@ -3,8 +3,10 @@ package com.geryes.heromanager.di
 import android.content.Context
 import com.geryes.heromanager.database.HeroDao
 import com.geryes.heromanager.database.HeroManagerDB
+import com.geryes.heromanager.database.MissionDao
 import com.geryes.heromanager.database.TeamDao
 import com.geryes.heromanager.repository.HeroRepository
+import com.geryes.heromanager.repository.MissionRepository
 import com.geryes.heromanager.repository.TeamRepository
 import dagger.Module
 import dagger.Provides
@@ -58,4 +60,15 @@ object AppModule {
         heroDao: HeroDao
     ) = TeamRepository(ioDispatcher, teamDao, heroDao)
 
+    @Singleton
+    @Provides
+    fun provideMissionDao(db: HeroManagerDB) = db.missionDao()
+
+    @Singleton
+    @Provides
+    fun getMissionRepository(
+        ioDispatcher: CoroutineDispatcher,
+        missionDao: MissionDao,
+        teamDao: TeamDao
+    ) = MissionRepository(ioDispatcher, missionDao, teamDao)
 }
