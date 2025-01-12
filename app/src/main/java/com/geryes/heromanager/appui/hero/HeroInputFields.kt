@@ -29,12 +29,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.geryes.heromanager.R
 import com.geryes.heromanager.appui.team.TeamPicker
+import com.geryes.heromanager.appui.team.getTeamState
 import com.geryes.heromanager.model.TeamAndPower
 import com.geryes.heromanager.model.TeamState
 import com.geryes.heromanager.utilities.uiutils.showToast
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
-@Composable
+ @Composable
 fun HeroInputFields(
     vm: HeroViewModel = hiltViewModel(),
     navigator: DestinationsNavigator,
@@ -133,6 +134,14 @@ fun HeroInputFields(
             value = vm.team.value?.name ?: "",
             onValueChange = {},
             label = { Text(stringResource(R.string.hero_team_input)) },
+            suffix = {
+                Text(
+                    text = getTeamState(
+                        vm.team.collectAsState().value?.state ?: TeamState.AVAILABLE
+                    ),
+                )
+            },
+            // trailingIcon = { }, TODO, show team power
             shape = RoundedCornerShape(23.dp),
             singleLine = true,
             readOnly = true,

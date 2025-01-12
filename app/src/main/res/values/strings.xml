@@ -67,7 +67,7 @@
     <string name="reset_mission_dialog_message">This action will set its state back to \"Planned\".</string>
     <string name="dialog_confirm_button">Confirm</string>
     <string name="dialog_cancel_button">Cancel</string>
-    <string name="reset_mission_dialog_title">Reset mission ?</string>
+    <string name="reset_mission_dialog_title">Reset mission</string>
     <string name="delete_dialog_title">Confirm deletion</string>
     <string name="delete_dialog_message">Do you really want to delete this content?</string>
     <string name="delete_button_content_description">Delete</string>

@@ -66,7 +66,7 @@ class HeroViewModel @Inject constructor(
         if (power.value.toIntOrNull() == null)
             powerError.value = true
         else
-            powerError.value = power.value.toInt() < 0
+            powerError.value = power.value.toInt() < 1
     }
 
     fun checkDataIsDifferent() {

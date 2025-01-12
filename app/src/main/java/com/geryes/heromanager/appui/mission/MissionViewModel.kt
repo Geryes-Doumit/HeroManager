@@ -79,7 +79,7 @@ class MissionViewModel @Inject constructor(
         if (minimumPower.value.toIntOrNull() == null)
             minimumPowerError.value = true
         else
-            minimumPowerError.value = minimumPower.value.toInt() < 0
+            minimumPowerError.value = minimumPower.value.toInt() < 1
     }
 
     fun checkDataIsDifferent() {

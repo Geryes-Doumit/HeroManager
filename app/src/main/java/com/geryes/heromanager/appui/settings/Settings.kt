@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.geryes.heromanager.R
+import com.geryes.heromanager.utilities.animations.AppearWithFadeIn
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
@@ -32,30 +33,31 @@ fun SettingsScreen(
         },
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
-        Column (
-            modifier = Modifier.padding(innerPadding)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            Button (
-                onClick = {
-                    vm.onFill()
-                },
-                modifier = Modifier.width(200.dp)
+        AppearWithFadeIn {
+            Column (
+                modifier = Modifier.padding(innerPadding)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom
             ) {
-                Text(text = stringResource(R.string.fill_button))
-            }
+                Button (
+                    onClick = {
+                        vm.onFill()
+                    },
+                    modifier = Modifier.width(200.dp)
+                ) {
+                    Text(text = stringResource(R.string.fill_button))
+                }
 
-            Button(
-                onClick = {
-                    vm.onClear()
-                },
-                modifier = Modifier.width(200.dp)
-            ) {
-                Text(text = stringResource(R.string.clear_button))
+                Button(
+                    onClick = {
+                        vm.onClear()
+                    },
+                    modifier = Modifier.width(200.dp)
+                ) {
+                    Text(text = stringResource(R.string.clear_button))
+                }
             }
         }
-
     }
 }

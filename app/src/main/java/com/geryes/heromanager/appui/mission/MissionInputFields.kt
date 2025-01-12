@@ -1,7 +1,5 @@
 package com.geryes.heromanager.appui.mission
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,12 +8,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
@@ -26,12 +22,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -39,8 +32,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.geryes.heromanager.R
 import com.geryes.heromanager.appui.team.TeamPicker
+import com.geryes.heromanager.appui.team.getTeamState
 import com.geryes.heromanager.model.MissionState
 import com.geryes.heromanager.model.TeamState
+import com.geryes.heromanager.utilities.uiutils.PowerIconAndValue
 import com.geryes.heromanager.utilities.uiutils.showToast
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
@@ -133,20 +128,19 @@ fun MissionInputFields(
             value = vm.team.collectAsState().value?.name ?: "",
             onValueChange = {},
             label = { Text(stringResource(R.string.mission_input_team)) },
+            suffix = {
+                Text(
+                    text = getTeamState(
+                        vm.team.collectAsState().value?.state ?: TeamState.AVAILABLE
+                    ),
+                )
+            },
             trailingIcon = {
-                Column (
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.bicep_black),
-                        contentDescription = stringResource(R.string.power_icon_content_description),
-                        modifier = Modifier.size(15.dp)
-                    )
-                    Text(
-                        text = "${vm.team.collectAsState().value?.totalPower ?: 0}",
-                        fontSize = 12.sp,
-                    )
-                }
+                PowerIconAndValue(
+                    power = vm.team.collectAsState().value?.totalPower,
+                    iconSize = 17,
+                    textSize = 11
+                )
             },
             shape = RoundedCornerShape(23.dp),
             singleLine = true,

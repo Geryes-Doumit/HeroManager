@@ -57,7 +57,7 @@ fun SwipeContainer(
         enableDismissFromStartToEnd = onEdit != null && allowEdit(),
         enableDismissFromEndToStart = onDelete != null && allowDelete(),
         backgroundContent = {
-            val direction = dismissState.dismissDirection ?: return@SwipeToDismissBox
+            val direction = dismissState.dismissDirection
             if (onEdit == null && direction == SwipeToDismissBoxValue.StartToEnd) return@SwipeToDismissBox
             if (onDelete == null && direction == SwipeToDismissBoxValue.EndToStart) return@SwipeToDismissBox
             val color by animateColorAsState(

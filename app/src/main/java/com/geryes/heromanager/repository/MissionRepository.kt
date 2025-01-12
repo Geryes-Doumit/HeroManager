@@ -41,12 +41,13 @@ class MissionRepository(
 
                     teamDao.updateTeam(teamAndPower.getTeam().copy(state = TeamState.BUSY))
                 }
-                else -> {
+                MissionState.COMPLETED -> {
                     val teamAndPower = fullMission.getTeam()
                     if (teamAndPower != null) {
                         teamDao.updateTeam(teamAndPower.getTeam().copy(state = TeamState.AVAILABLE))
                     }
                 }
+                else -> { } // Nothing to do
             }
         }
         return@withContext missionDao.updateMission(fullMission.getMission())
