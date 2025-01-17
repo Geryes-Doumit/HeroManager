@@ -82,7 +82,8 @@ fun EditHeroScreen(
             )
         },
         bottomBar = {
-            if (vm.team.collectAsState().value?.state == TeamState.AVAILABLE) {
+            if ((vm.team.collectAsState().value?.state ?: TeamState.AVAILABLE)
+                == TeamState.AVAILABLE) {
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(10.dp),
                     horizontalArrangement = Arrangement.SpaceAround,
