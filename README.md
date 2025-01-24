@@ -19,9 +19,9 @@ You can list, add and edit heroes via these screens:
   </tr>
 </table>
 
-A hero has a Hero name, a real name, a power level and can be attached to a team.
+A hero has a Hero name, a real name, a power level and can be attached to one team.
 
-If said team is busy, we cannot edit or delete de hero.
+If said team is busy, we cannot edit or delete the hero.
 
 ## Teams
 You can manage different teams via these screens:
@@ -34,7 +34,7 @@ You can manage different teams via these screens:
   </tr>
 </table>
 
-A team has a name, has members and a leader (that has to be a member).
+A team has a name, members and a leader (that has to be a member).
 The total team power is calculated by summing the power of every member.
 
 The team has a state (available or busy) depending on if it is in an ongoin mission.
@@ -57,10 +57,10 @@ When editing a mission, you can start it by pressing "Start Mission". This will 
 You can end the mission by clicking "End Mission", which will free up the team.
 
 A mission can only be started if:
-- The assisgned team isn't already busy
-- The assigned team has a sufficient power lever
 - Its name and description are not empty
 - Its minimum required power is greater than zero
+- The assisgned team isn't already busy
+- The assigned team has a sufficient power lever
 
 ---
 <p align=center>Created with ❤️ by Geryes Doumit</p>
