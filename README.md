@@ -46,7 +46,7 @@ You can deal with missions via these screens:
   <tr>
     <td> <img src="https://github.com/user-attachments/assets/a581ae79-2800-47d9-a1d2-5e50f4694f44"> </td>
     <td> <img src="https://github.com/user-attachments/assets/29642c4b-e8a0-46ef-ba8e-35d07e49013e"> </td>
-    <td> <img src="https://github.com/user-attachments/assets/efc00335-034d-4d95-9c30-435e4256d40a"> </td>
+    <td> <img src="https://github.com/user-attachments/assets/723ed40d-df8f-4b8a-9401-a64b0ed27c5c"> </td>
   </tr>
 </table>
 
