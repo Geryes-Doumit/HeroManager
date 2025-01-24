@@ -1,4 +1,5 @@
 # Hero Manager
+[![forthebadge](https://forthebadge.com/images/badges/made-with-kotlin.svg)](https://forthebadge.com) ![using-jetpack-compose](https://github.com/user-attachments/assets/cf2f9a31-b9cb-43f8-9f9c-f3a957b2af61) [![forthebadge](https://forthebadge.com/images/badges/powered-by-coffee.svg)](https://forthebadge.com)
 
 Hero Manager is an android app created for a last-year Computer Science project.
 I was asked to create an application using Romm Database, that incorporated three kinds of data, that are liked together in a way.
