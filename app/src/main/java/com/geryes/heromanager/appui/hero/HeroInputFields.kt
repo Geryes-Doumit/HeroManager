@@ -50,7 +50,8 @@ fun HeroInputFields(
                 showTeamPicker.value = false
                 vm.team.value = it?.getTeam()
                 vm.checkDataIsDifferent()
-            }
+            },
+            onlyShowAvailableTeams = true
         )
     }
 

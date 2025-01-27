@@ -23,6 +23,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,6 +33,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geryes.heromanager.R
 import com.geryes.heromanager.model.TeamAndPower
+import com.geryes.heromanager.model.TeamState
 import com.geryes.heromanager.repository.TeamRepository
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,7 +41,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TeamPickerViewModel @Inject constructor(
-    teamRepo: TeamRepository
+    teamRepo: TeamRepository,
 ) : ViewModel() {
     val teams = teamRepo.getAllTeams()
 }
@@ -48,7 +52,8 @@ class TeamPickerViewModel @Inject constructor(
 fun TeamPicker(
     teamPickerVM : TeamPickerViewModel = hiltViewModel(),
     currentTeam: TeamAndPower? = null,
-    onTeamSelected: (TeamAndPower?) -> Unit
+    onTeamSelected: (TeamAndPower?) -> Unit,
+    onlyShowAvailableTeams: Boolean = false
 ) {
     val teams = teamPickerVM.teams.collectAsStateWithLifecycle(initialValue = emptyList())
     Dialog(
@@ -85,8 +90,35 @@ fun TeamPicker(
                 modifier = Modifier.padding(innerPadding)
                     .fillMaxWidth(),
             ) {
+                if (onlyShowAvailableTeams) {
+                    item {
+                        Column (
+                            verticalArrangement = Arrangement.Center,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            val text: String = stringResource(R.string.only_showing_available_teams)
+                            Text(
+                                text = text,
+                                style = TextStyle(
+                                    fontStyle = FontStyle.Italic,
+                                    color = androidx.compose.ui.graphics.Color.Gray,
+                                    textAlign = TextAlign.Center
+                                ),
+                                modifier = Modifier.padding(8.dp).fillMaxWidth(),
+                            )
+                            HorizontalDivider()
+                        }
+                    }
+                }
+
                 items(
-                    items = teams.value,
+                    items = teams.value.filter {
+                        if (onlyShowAvailableTeams) {
+                            it.state == TeamState.AVAILABLE
+                        } else {
+                            true
+                        }
+                    },
                     key = { teamAndPower -> teamAndPower.id }
                 ) {
                     item ->

@@ -1,5 +1,6 @@
 package com.geryes.heromanager.appui.mission
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,11 +11,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.geryes.heromanager.R
+import com.geryes.heromanager.utilities.uiutils.AbandonDialog
 import com.geryes.heromanager.utilities.uiutils.GoBackButton
 import com.geryes.heromanager.utilities.uiutils.ScreenTopBar
 import com.ramcosta.composedestinations.annotation.Destination
@@ -27,11 +33,29 @@ fun CreateMissionScreen(
     vm: MissionViewModel = hiltViewModel(),
     navigator: DestinationsNavigator
 ) {
+    var showAbandonDialog by remember { mutableStateOf(false) }
+
+    if (showAbandonDialog) {
+        AbandonDialog(
+            onConfirm = {
+                showAbandonDialog = false
+                navigator.popBackStack()
+            },
+            onDismiss = { showAbandonDialog = false }
+        )
+    }
+
+    BackHandler {
+        showAbandonDialog = true
+    }
+
     Scaffold(
         topBar = {
             ScreenTopBar(
                 leftContent = {
-                    GoBackButton(navigator)
+                    GoBackButton(navigator) {
+                        showAbandonDialog = true
+                    }
                 },
                 title = stringResource(R.string.create_mission_title),
             )

@@ -90,6 +90,7 @@ fun TeamInputFields(
     // for the toast
     val context = LocalContext.current
     val cannotDeleteTeamToastMsg = stringResource(R.string.cannot_delete_or_edit_team)
+    val addMembersBeforeLeaderMsg = stringResource(R.string.add_members_before_leader)
 
     Column(
         modifier = Modifier.padding(innerPadding)
@@ -141,6 +142,14 @@ fun TeamInputFields(
             modifier = Modifier.fillMaxWidth()
                 .clickable (
                     onClick = {
+                        if (vm.members.isEmpty()) {
+                            showToast(
+                                context,
+                                addMembersBeforeLeaderMsg
+                            )
+                            return@clickable
+                        }
+
                         if (teamState != TeamState.BUSY)
                             showLeaderPicker.value = true
                         else

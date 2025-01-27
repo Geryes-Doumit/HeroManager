@@ -1,5 +1,6 @@
 package com.geryes.heromanager.appui.hero
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.geryes.heromanager.R
 import com.geryes.heromanager.model.TeamState
+import com.geryes.heromanager.utilities.uiutils.AbandonDialog
 import com.geryes.heromanager.utilities.uiutils.DeleteButton
 import com.geryes.heromanager.utilities.uiutils.DeleteDialog
 import com.geryes.heromanager.utilities.uiutils.GoBackButton
@@ -39,6 +41,7 @@ fun EditHeroScreen(
     heroId: Long,
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showAbandonDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         vm.setIdAndGetInfo(heroId)
@@ -55,6 +58,23 @@ fun EditHeroScreen(
         )
     }
 
+    if (showAbandonDialog) {
+        AbandonDialog(
+            onConfirm = {
+                showAbandonDialog = false
+                navigator.popBackStack()
+            },
+            onDismiss = { showAbandonDialog = false }
+        )
+    }
+
+    BackHandler {
+        if (vm.dataIsDifferent.value)
+            showAbandonDialog = true
+        else
+            navigator.popBackStack()
+    }
+
     // for the toast
     val context = LocalContext.current
     val toastMessage = stringResource(R.string.cannot_delete_or_edit_hero)
@@ -63,7 +83,12 @@ fun EditHeroScreen(
         topBar = {
             ScreenTopBar(
                 leftContent = {
-                    GoBackButton(navigator)
+                    GoBackButton(navigator) {
+                        if (vm.dataIsDifferent.value)
+                            showAbandonDialog = true
+                        else
+                            navigator.popBackStack()
+                    }
                 },
                 title = stringResource(R.string.edit_hero_title),
                 rightContent = {

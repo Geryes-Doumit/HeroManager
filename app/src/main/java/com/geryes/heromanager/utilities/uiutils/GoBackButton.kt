@@ -14,7 +14,10 @@ import androidx.compose.material3.Icon
 
 @Composable
 fun GoBackButton(
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
+    onClick : () -> Unit = {
+        navigator.popBackStack()
+    }
 ) {
     Icon(
         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -22,7 +25,7 @@ fun GoBackButton(
         modifier = Modifier.width(46.dp)
             .padding(end = 16.dp)
             .clickable {
-                navigator.popBackStack()
+                onClick()
             },
         tint = MaterialTheme.colorScheme.onSurface,
     )

@@ -75,4 +75,8 @@
     <string name="team_power_too_low">The power of the assigned team is too low.</string>
     <string name="team_already_busy">The assigned team is busy with another mission.</string>
     <string name="cannot_delete_or_edit_hero">You cannot edit or delete a hero in a busy team.</string>
+    <string name="only_showing_available_teams">Only showing available teams.</string>
+    <string name="add_members_before_leader">You need to add members before selecting a leader.</string>
+    <string name="confirm_abandon">Abort action?</string>
+    <string name="abandon_dialog_message">Do you really want to go back? Your changes will not be saved.</string>
 </resources>

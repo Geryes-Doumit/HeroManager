@@ -1,5 +1,6 @@
 package com.geryes.heromanager.appui.mission
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.geryes.heromanager.R
 import com.geryes.heromanager.model.MissionState
+import com.geryes.heromanager.utilities.uiutils.AbandonDialog
 import com.geryes.heromanager.utilities.uiutils.DeleteButton
 import com.geryes.heromanager.utilities.uiutils.DeleteDialog
 import com.geryes.heromanager.utilities.uiutils.GoBackButton
@@ -42,6 +44,7 @@ fun EditMissionScreen(
 ) {
     var showResetDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var showAbandonDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         vm.setIdAndGetInfo(missionId)
@@ -55,6 +58,23 @@ fun EditMissionScreen(
             },
             onDismiss = { showResetDialog = false }
         )
+    }
+
+    if (showAbandonDialog) {
+        AbandonDialog(
+            onConfirm = {
+                showAbandonDialog = false
+                navigator.popBackStack()
+            },
+            onDismiss = { showAbandonDialog = false }
+        )
+    }
+
+    BackHandler {
+        if (vm.dataIsDifferent.value)
+            showAbandonDialog = true
+        else
+            navigator.popBackStack()
     }
 
     if (showDeleteDialog) {
@@ -76,7 +96,12 @@ fun EditMissionScreen(
         topBar = {
             ScreenTopBar(
                 leftContent = {
-                    GoBackButton(navigator)
+                    GoBackButton(navigator) {
+                        if (vm.dataIsDifferent.value)
+                            showAbandonDialog = true
+                        else
+                            navigator.popBackStack()
+                    }
                 },
                 title = vm.missionName.collectAsState().value,
                 rightContent = {
