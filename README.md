@@ -37,7 +37,7 @@ You can manage different teams via these screens:
 A team has a name, members and a leader (that has to be a member).
 The total team power is calculated by summing the power of every member.
 
-The team has a state (available or busy) depending on if it is in an ongoin mission.
+The team has a state (available or busy) depending on if it is in an ongoing mission.
 
 ## Missions
 You can deal with missions via these screens: 
@@ -60,7 +60,7 @@ A mission can only be started if:
 - Its name and description are not empty
 - Its minimum required power is greater than zero
 - The assisgned team isn't already busy
-- The assigned team has a sufficient power lever
+- The assigned team has a sufficient power level
 
 ---
 <p align=center>Created with ❤️ by Geryes Doumit</p>
